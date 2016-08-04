@@ -19,7 +19,7 @@ innodb_buffer_pool_size=45876M
 innodb_log_file_size=2G
 innodb_log_buffer_size=128M
 innodb_file_per_table=1
-wsrep_sst_auth="sstuser:$oc1@Lm3Tr1Xp#C"
+wsrep_sst_auth="sstuser:SST_AUTH_PLACEHOLDER"
 
 wsrep_cluster_name="smxpxc"
 #default is /usr/lib64/libgalera_smm.so, on ubuntu, it's under /usr/lib/libgalera_smm.so, will be replaced during deployment

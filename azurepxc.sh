@@ -198,6 +198,13 @@ create_mycnf() {
     sed -i "s/^wsrep_cluster_address=.*/wsrep_cluster_address=gcomm:\/\/${CLUSTERADDRESS}/I" /etc/my.cnf
     sed -i "s/^wsrep_node_address=.*/wsrep_node_address=${NODEADDRESS}/I" /etc/my.cnf
     sed -i "s/^wsrep_node_name=.*/wsrep_node_name=${NODENAME}/I" /etc/my.cnf
+    
+    # generate a pseud pass for my.cnf
+    # to make sure all nodes have the same pass uses date until hour
+    # potencial bug when deploying near hour change
+    local pseudo_pass=$(date -u +'%Y%m%d%H' | sha256sum | base64 | head -c 32)
+    sed -i "s/SST_AUTH_PLACEHOLDER/${pseudo_pass}/I" /etc/my.cnf
+    
     if [ $isubuntu -eq 0 ];
     then
         sed -i "s/^wsrep_provider=.*/wsrep_provider=\/usr\/lib\/libgalera_smm.so/I" /etc/my.cnf
@@ -234,9 +241,9 @@ install_mysql_centos() {
     yum -y install http://www.percona.com/downloads/percona-release/percona-release-0.0-1.x86_64.rpm
     wget --no-cache http://apt.sw.be/redhat/el6/en/x86_64/rpmforge/RPMS/socat-1.7.2.4-1.el6.rf.x86_64.rpm
     rpm -Uvh socat-1.7.2.4*rpm
-	wget --no-cache https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
-	rpm -Uvh epel-release-latest-6.noarch.rpm
-	yum -y install libev
+    wget --no-cache https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
+    rpm -Uvh epel-release-latest-6.noarch.rpm
+    yum -y install libev
     yum -y install Percona-XtraDB-Cluster-56
     yum -y install xinetd
 }
@@ -301,14 +308,16 @@ configure_mysql() {
 }
 
 allow_passwordssh() {
-	grep -q '^PasswordAuthentication yes' /etc/ssh/sshd_config
-    if [ ${?} -eq 0 ];
-    then
-		return
-	fi
-    sed -i "s/^#PasswordAuthentication.*/PasswordAuthentication yes/I" /etc/ssh/sshd_config
-    sed -i "s/^PasswordAuthentication no.*/PasswordAuthentication yes/I" /etc/ssh/sshd_config
-	/etc/init.d/sshd reload
+  # Using SSH-Key now
+  #
+  # grep -q '^PasswordAuthentication yes' /etc/ssh/sshd_config
+  #     if [ ${?} -eq 0 ];
+  #     then
+  #   return
+  # fi
+  #     sed -i "s/^#PasswordAuthentication.*/PasswordAuthentication yes/I" /etc/ssh/sshd_config
+  #     sed -i "s/^PasswordAuthentication no.*/PasswordAuthentication yes/I" /etc/ssh/sshd_config
+  # /etc/init.d/sshd reload
 }
 
 # temporary workaround form CRP 

@@ -14,21 +14,20 @@
         "description": "Connect to your cluster using dnsName.cloudapp.net"
       }
     },
-    "userName": {
+    "adminUserName": {
       "type": "string",
       "metadata": {
         "description": "user name to ssh to the VMs"
       }
     },
-    "password": {
-      "type": "securestring",
+    "sshKeyData": {
+      "type": "string",
       "metadata": {
-        "description": "password to ssh to the VMs"
+        "description": "Public Key for ssh-user"
       }
     },
     "vmSize": {
       "type": "string",
-      "defaultValue": "Standard_DS13_v2",
       "metadata": {
         "description": "size for the VMs"
       }
@@ -42,7 +41,6 @@
     },
     "virtualNetworkName": {
       "type": "string",
-      "defaultValue": "pxcvnet",
       "metadata": {
         "description": "Virtual network name for the cluster"
       }
@@ -56,49 +54,43 @@
     },
     "vnetAddressPrefix": {
       "type": "string",
-      "defaultValue": "10.4.0.0/16",
       "metadata": {
         "description": "IP address in CIDR for virtual network"
       }
     },
     "dbSubnetAddressPrefix": {
       "type": "string",
-      "defaultValue": "10.4.99.0/24",
       "metadata": {
         "description": "IP address in CIDR for db subnet"
       }
     },
     "vmIP1": {
       "type": "string",
-      "defaultValue": "10.0.1.4",
       "metadata": {
         "description": "IP address for VM1 must be available in db subnet"
       }
     },
     "vmIP2": {
       "type": "string",
-      "defaultValue": "10.0.1.5",
       "metadata": {
         "description": "IP address for VM2 must be available in db subnet"
       }
     },
     "vmIP3": {
       "type": "string",
-      "defaultValue": "10.0.1.6",
       "metadata": {
         "description": "IP address for VM3 must be available in db subnet"
       }
     },
     "vmNamePrefix": {
       "type": "string",
-      "defaultValue": "pxcnd",
+      "defaultValue": "mysql-pxc",
       "metadata": {
         "description": "host name prefix for the VMs"
       }
     },
     "imagePublisher": {
       "type": "string",
-      "defaultValue": "Canonical",
       "allowedValues": [
         "OpenLogic",
         "Canonical"
@@ -109,7 +101,6 @@
     },
     "imageOffer": {
       "type": "string",
-      "defaultValue": "UbuntuServer",
       "allowedValues": [
         "CentOS",
         "UbuntuServer"
@@ -120,7 +111,6 @@
     },
     "imageSKU": {
       "type": "string",
-      "defaultValue": "12.04.5-LTS",
       "allowedValues": [
         "6.5",
         "12.04.5-LTS",
@@ -209,14 +199,14 @@
     },
     "customScriptFilePath": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/mysql-ha-pxc/azurepxc.sh",
+      "defaultValue": "https://raw.githubusercontent.com/socialmetrix/azure-mysql-ha-pxc/master/azurepxc.sh",
       "metadata": {
         "description": "bash file location to configure the cluster"
       }
     },
     "mysqlConfigFilePath": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/mysql-ha-pxc/my.cnf.template",
+      "defaultValue": "https://raw.githubusercontent.com/socialmetrix/azure-mysql-ha-pxc/my.cnf.template",
       "metadata": {
         "description": "my.cnf file location"
       }
@@ -230,8 +220,12 @@
     }
   },
   "variables": {
-    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
-    "dbSubnetRef": "[concat(variables('vnetID'),'/subnets/',parameters('dbSubnetName'))]",
+    
+    "vnetID": "[resourceId('devops', 'Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
+    "dbSubnetRef": "[concat(variables('vnetID'),'/subnets/', parameters('dbSubnetName'))]",
+    
+    "sshKeyPath": "[concat('/home/',variables('adminUserName'),'/.ssh/authorized_keys')]",    
+    
     "lbPublicIPName": "[concat(variables('lbName'), '-publicIP')]",
     "lbPublicIPRef": "[resourceId('Microsoft.Network/publicIPAddresses',variables('lbPublicIPName'))]",
     "lbName": "[concat(parameters('vmNamePrefix'), '-lb')]",
@@ -453,8 +447,20 @@
         },
         "osProfile": {
           "computerName": "[variables('vmName1')]",
-          "adminUsername": "[parameters('userName')]",
-          "adminPassword": "[parameters('password')]"
+
+          "adminUsername": "[variables('adminUsername')]",
+          "linuxConfiguration": {
+            "disablePasswordAuthentication": "true",
+            "ssh": {
+              "publicKeys": [
+                {
+                  "path": "[variables('sshKeyPath')]",
+                  "keyData": "[parameters('sshKeyData')]"
+                }
+              ]
+            }
+          }
+
         },
         "storageProfile": {
           "imageReference": {
@@ -542,8 +548,19 @@
         },
         "osProfile": {
           "computerName": "[variables('vmName2')]",
-          "adminUsername": "[parameters('userName')]",
-          "adminPassword": "[parameters('password')]"
+          
+          "adminUsername": "[parameters('adminUserName')]",
+          "linuxConfiguration": {
+            "disablePasswordAuthentication": "true",
+            "ssh": {
+              "publicKeys": [
+                {
+                  "path": "[variables('sshKeyPath')]",
+                  "keyData": "[parameters('sshKeyData')]"
+                }
+              ]
+            }
+          }
         },
         "storageProfile": {
           "imageReference": {
@@ -632,8 +649,20 @@
         },
         "osProfile": {
           "computerName": "[variables('vmName3')]",
-          "adminUsername": "[parameters('userName')]",
-          "adminPassword": "[parameters('password')]"
+
+          "adminUsername": "[variables('adminUsername')]",
+          "linuxConfiguration": {
+            "disablePasswordAuthentication": "true",
+            "ssh": {
+              "publicKeys": [
+                {
+                  "path": "[variables('sshKeyPath')]",
+                  "keyData": "[parameters('sshKeyData')]"
+                }
+              ]
+            }
+          }
+
         },
         "storageProfile": {
           "imageReference": {

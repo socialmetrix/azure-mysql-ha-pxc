@@ -29,7 +29,7 @@ azure storage account create \
   --location eastus2 \
   --sku-name PLRS \
   --kind Storage \
-  --resource-group mysql-pxc smxmysqlpxc
+  --resource-group mysql-pxc smxpxc
 ``
 
 ## Launch Template Using Command Line
