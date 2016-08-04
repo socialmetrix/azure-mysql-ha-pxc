@@ -1,0 +1,50 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "dnsName": {
+      "value": "mysql-pxc"
+    },
+    "storageAccount": {
+      "value": "smxpxc"
+    },
+    "virtualNetworkName": {
+      "value": "smxnetwork"
+    },
+    "vnetAddressPrefix": {
+      "value": "10.3.0.0/16"
+    },
+    "dbSubnetName": {
+      "value": "mysql-pxc"
+    },
+    "dbSubnetAddressPrefix": {
+      "value": "10.3.100.0/24"
+    },
+    "vmIP1": {
+      "value": "10.3.100.11"
+    },
+    "vmIP2": {
+      "value": "10.3.100.12"
+    },
+    "vmIP3": {
+      "value": "10.3.100.13"
+    },
+    "vmNamePrefix": {
+      "value": "mysql-pxc"
+    },
+    "vmSize": {
+      "value": "Standard_DS13_v2"
+    },
+    "adminUserName": {
+      "value": "smx"
+    },
+    "imagePublisher": {
+      "value": "Canonical"
+    },
+    "imageSKU": {
+      "value": "16.04.0-LTS"
+    },
+    "imageOffer": {
+      "value": "UbuntuServer"
+    }
+}
