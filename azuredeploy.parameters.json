@@ -1,0 +1,36 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "dnsName": {
+      "value": "mysql-pxc"
+    },
+    "storageAccount": {
+      "value": "smxmysqlpxc"
+    },
+    "virtualNetworkName": {
+      "value": "smxpxcvnet"
+    },
+    "dbSubnetName": {
+      "value": "mysql-pxc"
+    },
+    "vmIP1": {
+      "value": "10.4.99.11"
+    },
+    "vmIP2": {
+      "value": "10.4.99.12"
+    },
+    "vmIP3": {
+      "value": "10.4.99.13"
+    },
+    "userName": {
+      "value": "smx"
+    },
+    "password": {
+      "value": "$oc1@Lm3Tr1Xp#C"
+    },
+    "vmNamePrefix": {
+      "value": "mysql-pxc"
+    }
+  }
+}
