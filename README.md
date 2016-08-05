@@ -29,18 +29,16 @@ azure storage account create \
   --location eastus2 \
   --sku-name PLRS \
   --kind Storage \
-  --resource-group mysql-pxc smxpxc
-``
+  --resource-group mysql-ha-pxc smxpxc
+```
 
 ## Launch Template Using Command Line
 ```bash
-cp -pR my.cnf.template ~/Dropbox/Public/
-
 azure group deployment create \
   --template-file azuredeploy.json \
   --parameters-file azuredeploy.parameters.json \
-  mysql-pxc mysql-pxc
+  mysql-ha-pxc mysql-ha-pxc
   
 # if something went wrong:
-# azure group delete -q mysql-pxc
+# azure group delete -q mysql-ha-pxc
 ```
