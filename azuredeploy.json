@@ -14,7 +14,7 @@
         "description": "Connect to your cluster using dnsName.cloudapp.net"
       }
     },
-    "adminUserName": {
+    "adminUsername": {
       "type": "string",
       "metadata": {
         "description": "user name to ssh to the VMs"
@@ -206,7 +206,7 @@
     },
     "mysqlConfigFilePath": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/socialmetrix/azure-mysql-ha-pxc/my.cnf.template",
+      "defaultValue": "https://raw.githubusercontent.com/socialmetrix/azure-mysql-ha-pxc/master/my.cnf.template",
       "metadata": {
         "description": "my.cnf file location"
       }
@@ -221,10 +221,10 @@
   },
   "variables": {
     
-    "vnetID": "[resourceId('devops', 'Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
+    "vnetID": "[resourceId('devops', 'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
     "dbSubnetRef": "[concat(variables('vnetID'),'/subnets/', parameters('dbSubnetName'))]",
     
-    "sshKeyPath": "[concat('/home/',variables('adminUserName'),'/.ssh/authorized_keys')]",    
+    "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",    
     
     "lbPublicIPName": "[concat(variables('lbName'), '-publicIP')]",
     "lbPublicIPRef": "[resourceId('Microsoft.Network/publicIPAddresses',variables('lbPublicIPName'))]",
@@ -233,7 +233,7 @@
     "ilbBackendAddressPoolName": "[concat(parameters('vmNamePrefix'), '-ilbBackendPool')]",
     "ilbBackendAddressPoolID": "[concat(variables('lbID'),'/backendAddressPools/', variables('ilbBackendAddressPoolName'))]",
     "ilbRuleName": "[concat(parameters('vmNamePrefix'), '-ilbRule')]",
-    "ilbRuleID": "[concat(variables('lbID'),'/loadBalancingRules/',variables('ilbRuleName'))]",
+
     "probeName": "[concat(parameters('vmNamePrefix'), '-probe')]",
     "probeID": "[concat(variables('lbID'),'/probes/',variables('probeName'))]",
     "sshIPConfigName": "[concat(parameters('vmNamePrefix'), '-sshIPCfg')]",
@@ -252,9 +252,8 @@
     "nicId1": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName1'))]",
     "nicId2": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName2'))]",
     "nicId3": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName3'))]",
-    "backEndIPConfigNic1": "[concat(variables('nicId1'),'/ipConfigurations/ipconfig1')]",
-    "backEndIPConfigNic2": "[concat(variables('nicId2'),'/ipConfigurations/ipconfig1')]",
-    "backEndIPConfigNic3": "[concat(variables('nicId3'),'/ipConfigurations/ipconfig1')]",
+
+
     "vmName1": "[concat('a-', parameters('vmNamePrefix'))]",
     "vmName2": "[concat('k-', parameters('vmNamePrefix'))]",
     "vmName3": "[concat('z-', parameters('vmNamePrefix'))]",
@@ -305,27 +304,27 @@
       "location": "[resourceGroup().location]",
       "properties": {}
     },
-    {
-      "apiVersion": "2015-06-15",
-      "type": "Microsoft.Network/virtualNetworks",
-      "name": "[parameters('virtualNetworkName')]",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "addressSpace": {
-          "addressPrefixes": [
-            "[parameters('vnetAddressPrefix')]"
-          ]
-        },
-        "subnets": [
-          {
-            "name": "[parameters('dbSubnetName')]",
-            "properties": {
-              "addressPrefix": "[parameters('dbSubnetAddressPrefix')]"
-            }
-          }
-        ]
-      }
-    },
+    // {
+    //   "apiVersion": "2015-06-15",
+    //   "type": "Microsoft.Network/virtualNetworks",
+    //   "name": "[parameters('virtualNetworkName')]",
+    //   "location": "[resourceGroup().location]",
+    //   "properties": {
+    //     "addressSpace": {
+    //       "addressPrefixes": [
+    //         "[parameters('vnetAddressPrefix')]"
+    //       ]
+    //     },
+    //     "subnets": [
+    //       {
+    //         "name": "[parameters('dbSubnetName')]",
+    //         "properties": {
+    //           "addressPrefix": "[parameters('dbSubnetAddressPrefix')]"
+    //         }
+    //       }
+    //     ]
+    //   }
+    // },
     {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/networkInterfaces",
@@ -448,9 +447,9 @@
         "osProfile": {
           "computerName": "[variables('vmName1')]",
 
-          "adminUsername": "[variables('adminUsername')]",
+          "adminUsername": "[parameters('adminUsername')]",
           "linuxConfiguration": {
-            "disablePasswordAuthentication": "true",
+            "disablePasswordAuthentication": true,
             "ssh": {
               "publicKeys": [
                 {
@@ -549,9 +548,9 @@
         "osProfile": {
           "computerName": "[variables('vmName2')]",
           
-          "adminUsername": "[parameters('adminUserName')]",
+          "adminUsername": "[parameters('adminUsername')]",
           "linuxConfiguration": {
-            "disablePasswordAuthentication": "true",
+            "disablePasswordAuthentication": true,
             "ssh": {
               "publicKeys": [
                 {
@@ -650,9 +649,9 @@
         "osProfile": {
           "computerName": "[variables('vmName3')]",
 
-          "adminUsername": "[variables('adminUsername')]",
+          "adminUsername": "[parameters('adminUsername')]",
           "linuxConfiguration": {
-            "disablePasswordAuthentication": "true",
+            "disablePasswordAuthentication": true,
             "ssh": {
               "publicKeys": [
                 {
