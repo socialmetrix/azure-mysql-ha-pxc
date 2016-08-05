@@ -13,10 +13,8 @@ To gain root access to MySQL, you must ssh into a node and sudo to run mysql.
 
 
 ##Preparation
-1. Select a Ubuntu Version:
-```bash
-azure vm image list eastus2 canonical ubuntuserver
-```
+This template expects a **Resource Group** `mysql-ha-pxc` and a Subnet called: `mysql-pxc` that holds the address range: `10.3.100.0/24`.
+Script will be downloaded on each machine at: `/var/lib/waagent/Microsoft.OSTCExtensions.CustomScriptForLinux-1.4.1.0/download/0`
 
 1. Create a Resource Group: 
 ```bash

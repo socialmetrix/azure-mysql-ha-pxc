@@ -52,18 +52,6 @@
         "description": "subnet name for the MySQL nodes"
       }
     },
-    "vnetAddressPrefix": {
-      "type": "string",
-      "metadata": {
-        "description": "IP address in CIDR for virtual network"
-      }
-    },
-    "dbSubnetAddressPrefix": {
-      "type": "string",
-      "metadata": {
-        "description": "IP address in CIDR for db subnet"
-      }
-    },
     "vmIP1": {
       "type": "string",
       "metadata": {
@@ -304,34 +292,12 @@
       "location": "[resourceGroup().location]",
       "properties": {}
     },
-    // {
-    //   "apiVersion": "2015-06-15",
-    //   "type": "Microsoft.Network/virtualNetworks",
-    //   "name": "[parameters('virtualNetworkName')]",
-    //   "location": "[resourceGroup().location]",
-    //   "properties": {
-    //     "addressSpace": {
-    //       "addressPrefixes": [
-    //         "[parameters('vnetAddressPrefix')]"
-    //       ]
-    //     },
-    //     "subnets": [
-    //       {
-    //         "name": "[parameters('dbSubnetName')]",
-    //         "properties": {
-    //           "addressPrefix": "[parameters('dbSubnetAddressPrefix')]"
-    //         }
-    //       }
-    //     ]
-    //   }
-    // },
     {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('nicName1')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
         "[concat('Microsoft.Network/loadBalancers/', variables('lbName'))]"
       ],
       "properties": {
@@ -365,7 +331,6 @@
       "name": "[variables('nicName2')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
         "[concat('Microsoft.Network/loadBalancers/', variables('lbName'))]"
       ],
       "properties": {
@@ -399,7 +364,6 @@
       "name": "[variables('nicName3')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
         "[concat('Microsoft.Network/loadBalancers/', variables('lbName'))]"
       ],
       "properties": {
@@ -448,6 +412,7 @@
           "computerName": "[variables('vmName1')]",
 
           "adminUsername": "[parameters('adminUsername')]",
+          
           "linuxConfiguration": {
             "disablePasswordAuthentication": true,
             "ssh": {
