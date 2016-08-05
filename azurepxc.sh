@@ -307,7 +307,7 @@ configure_mysql() {
     fi
 }
 
-allow_passwordssh() {
+# allow_passwordssh() {
   # Using SSH-Key now
   #
   # grep -q '^PasswordAuthentication yes' /etc/ssh/sshd_config
@@ -318,10 +318,10 @@ allow_passwordssh() {
   #     sed -i "s/^#PasswordAuthentication.*/PasswordAuthentication yes/I" /etc/ssh/sshd_config
   #     sed -i "s/^PasswordAuthentication no.*/PasswordAuthentication yes/I" /etc/ssh/sshd_config
   # /etc/init.d/sshd reload
-}
+# }
 
 # temporary workaround form CRP 
-allow_passwordssh  
+# allow_passwordssh  
 
 check_os
 if [ $iscentos -ne 0 ] && [ $isubuntu -ne 0 ];
