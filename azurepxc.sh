@@ -217,14 +217,13 @@ install_mysql_ubuntu() {
     then
         return
     fi
-    echo "installing mysql"
-    apt-key adv --keyserver keys.gnupg.net --recv-keys 1C4CBDCDCD2EFD2A
-    grep "repo.percona.com" /etc/apt/sources.list >/dev/null 2>&1
-    if [ ${?} -ne 0 ];
-    then
-        echo "deb http://repo.percona.com/apt precise main" >> /etc/apt/sources.list
-        echo "deb-src http://repo.percona.com/apt precise main" >> /etc/apt/sources.list
-    fi
+    #
+    # INSTALL INSTRUCTIONS FROM:
+    # https://www.percona.com/doc/percona-server/5.6/installation/apt_repo.html
+    echo "Downloading Percona Cluster Package"
+    wget https://repo.percona.com/apt/percona-release_0.1-3.$(lsb_release -sc)_all.deb
+    dpkg -i percona-release_0.1-3.$(lsb_release -sc)_all.deb
+
     apt-get update
     export DEBIAN_FRONTEND=noninteractive
     apt-get -q -y install percona-xtradb-cluster-56
