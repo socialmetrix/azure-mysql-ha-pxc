@@ -59,8 +59,10 @@ create_raid0_ubuntu() {
     if [ ${?} -eq 1 ];
     then 
         echo "installing mdadm"
-        wget --no-cache http://mirrors.cat.pdx.edu/ubuntu/pool/main/m/mdadm/mdadm_3.2.5-5ubuntu4_amd64.deb
-        dpkg -i mdadm_3.2.5-5ubuntu4_amd64.deb
+        # wget --no-cache http://mirrors.cat.pdx.edu/ubuntu/pool/main/m/mdadm/mdadm_3.2.5-5ubuntu4_amd64.deb
+        # dpkg -i mdadm_3.2.5-5ubuntu4_amd64.deb
+        apt-get update
+        apt-get  -y -q installmdadm
     fi
     echo "Creating raid0"
     udevadm control --stop-exec-queue
