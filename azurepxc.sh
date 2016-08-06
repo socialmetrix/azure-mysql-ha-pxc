@@ -62,7 +62,8 @@ create_raid0_ubuntu() {
         # wget --no-cache http://mirrors.cat.pdx.edu/ubuntu/pool/main/m/mdadm/mdadm_3.2.5-5ubuntu4_amd64.deb
         # dpkg -i mdadm_3.2.5-5ubuntu4_amd64.deb
         apt-get update
-        apt-get  -y -q installmdadm
+        export DEBIAN_FRONTEND=noninteractive
+        apt-get  -y -q --no-install-recommends install mdadm
     fi
     echo "Creating raid0"
     udevadm control --stop-exec-queue
@@ -153,6 +154,7 @@ configure_disks() {
 }
 
 open_ports() {
+    iptables -A INPUT -p tcp -m tcp --dport 22   -j ACCEPT
     iptables -A INPUT -p tcp -m tcp --dport 3306 -j ACCEPT
     iptables -A INPUT -p tcp -m tcp --dport 4444 -j ACCEPT
     iptables -A INPUT -p tcp -m tcp --dport 4567 -j ACCEPT
