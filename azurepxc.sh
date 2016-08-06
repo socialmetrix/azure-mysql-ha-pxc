@@ -231,6 +231,10 @@ install_mysql_ubuntu() {
     apt-get update
     export DEBIAN_FRONTEND=noninteractive
     apt-get -q -y install percona-xtradb-cluster-56
+    # Remove Package Install Configuration
+    # we already have a good config
+    rm -fr /etc/mysql
+    
     apt-get -y install xinetd
 }
 
