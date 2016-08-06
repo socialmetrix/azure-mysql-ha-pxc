@@ -231,6 +231,11 @@ install_mysql_ubuntu() {
     apt-get update
     export DEBIAN_FRONTEND=noninteractive
     apt-get -q -y install percona-xtradb-cluster-56
+
+    /etc/init.d/mysql stop
+    kill -9 $(pgrep mysqld)
+    rm /var/log/mysql?.* /var/log/mysql/error.log
+
     # Remove Package Install Configuration
     # we already have a good config
     rm -fr /etc/mysql
