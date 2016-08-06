@@ -4,8 +4,12 @@
 # in the parameter of DeployPXC script/runbook.
 [client]
 socket=/var/lib/mysql/mysql.sock
+default-character-set = utf8mb4
 
 [mysqld]
+character-set-server = utf8mb4
+collation-server = utf8mb4_unicode_ci
+
 datadir=/var/lib/mysql
 socket=/var/lib/mysql/mysql.sock
 user=mysql
@@ -46,3 +50,6 @@ max_connections=2048
 log-error=/var/log/mysqld.log
 # specifying pid-file causes issue in ubuntu
 #pid-file=/var/run/mysqld/mysqld.pid
+
+[mysql]
+default-character-set = utf8mb4

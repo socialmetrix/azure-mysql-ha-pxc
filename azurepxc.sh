@@ -145,7 +145,7 @@ configure_disks() {
     fi
 
     echo "Creating filesystem on ${PARTITION}."
-    mkfs -t ext4 lazy_itable_init=1 ${PARTITION}
+    mkfs -t ext4 ${PARTITION}
     mkdir "${MOUNTPOINT}"
     read UUID FS_TYPE < <(blkid -u filesystem ${PARTITION}|awk -F "[= ]" '{print $3" "$5}'|tr -d "\"")
     add_to_fstab "${UUID}" "${MOUNTPOINT}"
@@ -313,7 +313,7 @@ configure_mysql() {
         echo "CREATE USER 'clustercheckuser'@'localhost' identified by 'clustercheckpassword!';" >> /tmp/bootstrap-pxc.sql
         echo "GRANT PROCESS on *.* to 'clustercheckuser'@'localhost';" >> /tmp/bootstrap-pxc.sql
         echo "CREATE USER 'test'@'10.3.%' identified by '${sstauth[1]}';" >> /tmp/bootstrap-pxc.sql
-        echo "GRANT select on *.* to 'test'@'%';" >> /tmp/bootstrap-pxc.sql
+        echo "GRANT SELECT on *.* to 'test'@'10.3.%';" >> /tmp/bootstrap-pxc.sql
         echo "FLUSH PRIVILEGES;" >> /tmp/bootstrap-pxc.sql
         mysql < /tmp/bootstrap-pxc.sql
     fi
