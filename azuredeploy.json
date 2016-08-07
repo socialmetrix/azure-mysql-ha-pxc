@@ -8,6 +8,12 @@
         "description": "Storage account name for the cluster"
       }
     },
+    "diagnosticsStorageAccount": {
+      "type": "string",
+      "metadata": {
+        "description": "Storage account name for the Diagnostic Information"
+      }
+    },
     "dnsName": {
       "type": "string",
       "metadata": {
@@ -102,6 +108,7 @@
       "allowedValues": [
         "6.5",
         "12.04.5-LTS",
+        "14.04.4-LTS",
         "16.04.0-LTS"
       ],
       "metadata": {
@@ -242,9 +249,9 @@
     "nicId3": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName3'))]",
 
 
-    "vmName1": "[concat('a-', parameters('vmNamePrefix'))]",
-    "vmName2": "[concat('k-', parameters('vmNamePrefix'))]",
-    "vmName3": "[concat('z-', parameters('vmNamePrefix'))]",
+    "vmName1": "[concat(parameters('vmNamePrefix'), '-1')]",
+    "vmName2": "[concat(parameters('vmNamePrefix'), '-2')]",
+    "vmName3": "[concat(parameters('vmNamePrefix'), '-3')]",
     "availabilitySetName": "[concat(parameters('vmNamePrefix'), '-set')]",
     "vmExtensionName": "[concat(parameters('vmNamePrefix'), '-ext')]",
     "pxcClusterAddress": "[concat(parameters('vmIP1'), ',', parameters('vmIP2'), ',', parameters('vmIP3'))]",
@@ -468,6 +475,12 @@
               "id": "[variables('nicId1')]"
             }
           ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": true,
+            "storageUri": "[concat('http://', parameters('diagnosticsStorageAccount'), '.blob.core.windows.net')]"
+          }
         }
       }
     },
@@ -568,6 +581,12 @@
               "id": "[variables('nicId2')]"
             }
           ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": true,
+            "storageUri": "[concat('http://', parameters('diagnosticsStorageAccount'), '.blob.core.windows.net')]"
+          }
         }
       }
     },
@@ -670,6 +689,12 @@
               "id": "[variables('nicId3')]"
             }
           ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": true,
+            "storageUri": "[concat('http://', parameters('diagnosticsStorageAccount'), '.blob.core.windows.net')]"
+          }
         }
       }
     },

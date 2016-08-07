@@ -6,19 +6,16 @@
       "value": "mysql-pxc"
     },
     "storageAccount": {
-      "value": "smxpxc"
+      "value": "smxmysqlhapxc"
+    },
+    "diagnosticsStorageAccount": {
+      "value": "smxdiagnostic"
     },
     "virtualNetworkName": {
       "value": "smxnetwork"
     },
-    "vnetAddressPrefix": {
-      "value": "10.3.0.0/16"
-    },
     "dbSubnetName": {
       "value": "mysql-pxc"
-    },
-    "dbSubnetAddressPrefix": {
-      "value": "10.3.100.0/24"
     },
     "vmIP1": {
       "value": "10.3.100.11"
@@ -45,7 +42,7 @@
       "value": "Canonical"
     },
     "imageSKU": {
-      "value": "16.04.0-LTS"
+      "value": "14.04.4-LTS"
     },
     "imageOffer": {
       "value": "UbuntuServer"
