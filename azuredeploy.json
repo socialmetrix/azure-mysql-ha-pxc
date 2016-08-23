@@ -475,7 +475,7 @@
             {
               "name": "datadisk3",
               "diskSizeGB": "1000",
-              "lun": 1,
+              "lun": 2,
               "vhd": {
                 "uri": "[variables('dataDisk3VhdName1')]"
               },
@@ -590,7 +590,7 @@
             {
               "name": "datadisk3",
               "diskSizeGB": "1000",
-              "lun": 1,
+              "lun": 2,
               "vhd": {
                 "uri": "[variables('dataDisk3VhdName2')]"
               },
@@ -707,7 +707,7 @@
             {
               "name": "datadisk3",
               "diskSizeGB": "1000",
-              "lun": 1,
+              "lun": 2,
               "vhd": {
                 "uri": "[variables('dataDisk3VhdName3')]"
               },
