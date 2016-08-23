@@ -3,7 +3,7 @@
 # place it in a location that can be wget from the Linux VM it's deployed to, then specify that location
 # in the parameter of DeployPXC script/runbook.
 [client]
-socket=/var/lib/mysql/mysql.sock
+socket=/var/run/mysqld/mysqld.sock
 default-character-set = utf8mb4
 
 [mysqld]
@@ -11,7 +11,7 @@ character-set-server = utf8mb4
 collation-server = utf8mb4_unicode_ci
 
 datadir=/var/lib/mysql
-socket=/var/lib/mysql/mysql.sock
+socket=/var/run/mysqld/mysqld.sock
 user=mysql
 # Disabling symbolic-links is recommended to prevent assorted security risks
 symbolic-links=0
@@ -19,6 +19,9 @@ symbolic-links=0
 wsrep_cluster_address=gcomm://
 wsrep_node_name=
 wsrep_node_address=
+#
+# https://www.percona.com/blog/2012/08/02/avoiding-sst-when-adding-new-percona-xtradb-cluster-node/
+wsrep_provider_options="gcache.size=4G;"
 innodb_buffer_pool_size=45876M
 innodb_log_file_size=2G
 innodb_log_buffer_size=128M
@@ -46,8 +49,14 @@ sync_binlog=0
 log-bin=/var/lib/mysql/binlog
 max_connections=2048
 
+# Slow Log
+long_query_time=1
+slow_query_log=1
+slow_query_log_file="/var/log/mysql/log-slow-queries.log"
+
+
 [mysqld_safe]
-log-error=/var/log/mysqld.log
+log-error=/var/log/mysql/mysqld.log
 # specifying pid-file causes issue in ubuntu
 #pid-file=/var/run/mysqld/mysqld.pid
 

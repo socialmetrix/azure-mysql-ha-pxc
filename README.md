@@ -4,9 +4,10 @@ It is based on [azure-quickstart-templates/mysql-ha-pxc](https://github.com/Azur
 
 There are few changes to fit our use case, like:
 
-- the Subnet is in a different Resource Group
-- Upgrade the Ubuntu Version to **14.04.4-LTS**. I tried to use 16.04.0-LTS but run on issues when machine reboots.
-- Enable boot diagnostics
+- Authentication: Removed **password** login, prefering **SSH Keys**.
+- Networking: **Subnet** is in a different **Resource Group**.
+- SO: Upgraded Ubuntu Version to **14.04.4-LTS**. I tried to use 16.04.0-LTS but run on issues when machine reboots.
+- Monitoring: Enabled boot diagnostics
 
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fsocialmetrix%2Fazure-mysql-ha-pxc%2Fmaster%2Fazuredeploy.json" target="_blank">
@@ -74,7 +75,7 @@ It runs with those params:
 source azurepxc.sh
 
 export CLUSTERADDRESS=10.3.100.11,10.3.100.12,10.3.100.13
-export NODEADDRESS=10.3.100.13
+export NODEADDRESS=10.3.100.12
 export NODENAME=$(hostname)
 export MYSQLSTARTUP=bootstrap-pxc
 export MYCNFTEMPLATE=https://raw.githubusercontent.com/socialmetrix/azure-mysql-ha-pxc/master/my.cnf.template

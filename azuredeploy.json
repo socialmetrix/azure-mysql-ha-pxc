@@ -248,7 +248,6 @@
     "nicId2": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName2'))]",
     "nicId3": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName3'))]",
 
-
     "vmName1": "[concat(parameters('vmNamePrefix'), '-1')]",
     "vmName2": "[concat(parameters('vmNamePrefix'), '-2')]",
     "vmName3": "[concat(parameters('vmNamePrefix'), '-3')]",
@@ -256,18 +255,24 @@
     "vmExtensionName": "[concat(parameters('vmNamePrefix'), '-ext')]",
     "pxcClusterAddress": "[concat(parameters('vmIP1'), ',', parameters('vmIP2'), ',', parameters('vmIP3'))]",
     "customScriptCommandCommon": "[concat(parameters('customScriptCommandToExecute'), ' ', variables('pxcClusterAddress'), ' ')]",
+
     "vhdContainer1": "[concat('http://',parameters('storageAccount'),'.blob.core.windows.net/avhds/')]",
     "dataDisk1VhdName1": "[concat(variables('vhdContainer1'),variables('vmName1'),'dataDisk1.vhd')]",
     "dataDisk2VhdName1": "[concat(variables('vhdContainer1'),variables('vmName1'),'dataDisk2.vhd')]",
+    "dataDisk3VhdName1": "[concat(variables('vhdContainer1'),variables('vmName1'),'dataDisk3.vhd')]",
     "customScriptParamVm1": "[concat(parameters('vmIP1'), ' bootstrap-pxc ', parameters('mysqlConfigFilePath'))]",
     "vmExtensionName1": "[concat(variables('vmName1'),'/', variables('vmExtensionName'))]",
+    
     "vhdContainer2": "[concat('http://',parameters('storageAccount'),'.blob.core.windows.net/kvhds/')]",
     "dataDisk1VhdName2": "[concat(variables('vhdContainer2'),variables('vmName2'),'dataDisk1.vhd')]",
     "dataDisk2VhdName2": "[concat(variables('vhdContainer2'),variables('vmName2'),'dataDisk2.vhd')]",
+    "dataDisk3VhdName2": "[concat(variables('vhdContainer2'),variables('vmName2'),'dataDisk3.vhd')]",
     "customScriptParamVm2": "[concat(parameters('vmIP2'), ' start ', parameters('mysqlConfigFilePath'))]",
+    
     "vhdContainer3": "[concat('http://',parameters('storageAccount'),'.blob.core.windows.net/zvhds/')]",
     "dataDisk1VhdName3": "[concat(variables('vhdContainer3'),variables('vmName3'),'dataDisk1.vhd')]",
     "dataDisk2VhdName3": "[concat(variables('vhdContainer3'),variables('vmName3'),'dataDisk2.vhd')]",
+    "dataDisk3VhdName3": "[concat(variables('vhdContainer3'),variables('vmName3'),'dataDisk3.vhd')]",
     "customScriptParamVm3": "[concat(parameters('vmIP3'), ' start ', parameters('mysqlConfigFilePath'))]"
   },
   "resources": [
@@ -466,6 +471,15 @@
                 "uri": "[variables('dataDisk2VhdName1')]"
               },
               "createOption": "Empty"
+            },
+            {
+              "name": "datadisk3",
+              "diskSizeGB": "1000",
+              "lun": 1,
+              "vhd": {
+                "uri": "[variables('dataDisk3VhdName1')]"
+              },
+              "createOption": "Empty"
             }
           ]
         },
@@ -570,6 +584,15 @@
               "lun": 1,
               "vhd": {
                 "uri": "[variables('dataDisk2VhdName2')]"
+              },
+              "createOption": "Empty"
+            },
+            {
+              "name": "datadisk3",
+              "diskSizeGB": "1000",
+              "lun": 1,
+              "vhd": {
+                "uri": "[variables('dataDisk3VhdName2')]"
               },
               "createOption": "Empty"
             }
@@ -678,6 +701,15 @@
               "lun": 1,
               "vhd": {
                 "uri": "[variables('dataDisk2VhdName3')]"
+              },
+              "createOption": "Empty"
+            },
+            {
+              "name": "datadisk3",
+              "diskSizeGB": "1000",
+              "lun": 1,
+              "vhd": {
+                "uri": "[variables('dataDisk3VhdName3')]"
               },
               "createOption": "Empty"
             }

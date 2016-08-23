@@ -1,4 +1,5 @@
 #!/bin/bash
+# set -ex
 
 # This script is only tested on CentOS 6.5 and Ubuntu 12.04 LTS with Percona XtraDB Cluster 5.6.
 # You can customize variables such as MOUNTPOINT, RAIDCHUNKSIZE and so on to your needs.
